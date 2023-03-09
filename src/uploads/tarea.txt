@@ -1,0 +1,37 @@
+var docs = [];
+var tratamiento = [0, 2, 4, 12, 20];
+var n=0;
+for (var i = 0; i < 5; i++){
+    for(var j = 0; j < 4; j++){
+        n++;
+        var sujeto = {
+            nombre: 'Sujeto ' + (n),
+            edad: Math.ceil(Math.random() * (41 - 21) + 21),
+            correo: 'sujeto' + (n)+'@mail.com',
+        }
+        sujeto.grupo = i;
+        sujeto.tratamiento = tratamiento[i];
+        medicion = Math.ceil(Math.random() * (80 - 10) + 10);
+        docs.push(sujeto);
+    }
+}
+
+1) Crear una colección
+    db.sujetos.insertMany(docs);
+
+2) Obtener el listado de todas las personas.
+    db.sujetos.find();
+
+3)	Obtener el listado de todas las personas ordenadas por edad de mayor a menor.
+    var sort = {edad: -1}
+    db.sujetos.find().sort(sort)
+
+4) Obtener todas las persona del grupo 0 y todas las personas del grupo 5 solo mostrando el nombre, el tratamiento y la medición.
+    var filter = {$or: [{grupo: 0}, {grupo: 5}]}
+    var proyeccion = {nombre: 1, tratamiento: 1, medicion: 1}
+    db.sujetos.find(filter, proyeccion);
+
+5)	Actualizar el segundo grupo y aumentar los segundos implementados por 5 segundos.
+    var filter = {grupo: 1}
+    var updCmd = {$inc: {medicion: 5}}
+    db.sujetos.updateMany(filter, updCmd)
